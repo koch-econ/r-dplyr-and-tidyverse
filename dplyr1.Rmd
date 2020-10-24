@@ -28,11 +28,18 @@ library(tibble) # улучшенные датафреймы
 
 
 ### База girls & boys
-
+```{r}
+(boys <- read_delim("csv/boys.txt",delim='|'))
+```
 
 ```{r}
-
+(girls <- read_delim("csv/girls.txt",delim = "|"))
 ```
+
+
+
+
+
 
 
 
