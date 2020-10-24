@@ -23,6 +23,8 @@ library(knitr) # собираем документ из RMarkdown
 library(readxl) # импорт из Excel
 library(stringr) # основные операции со строками
 library(tibble) # улучшенные датафреймы
+library(tidyr)  # реструктуризация
+library(readr) # read_csv() , read_delim()
 
 ```
 
@@ -126,7 +128,7 @@ cat последовательно выводит свои аргументы к
 
                           
 ```{r}
-"привет" %>% cat( "Илья, ", ., "!",sep = "")
+"привет" %>%  cat( "Илья, ", ., "!",sep = "")
 ```
 
 
@@ -178,6 +180,14 @@ countries %>% filter(Region %in% c('Eastern Europe','Baltic Countries'), Surface
 ```{r}
 countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
   arrange(SurfaceArea)
+
+```
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(desc(SurfaceArea))
+
+
 ```
 
 
@@ -241,7 +251,9 @@ population %>% filter(CountryCode=='RUS') %>%
 ```{r}
 population %>% filter(CountryCode=='RUS') %>% 
   summarise(
-     avg_pol_mln=mean(Population),
+     avg_pol_mln=mean(Population)/1e6,
+      max_pol_mln=max(Population)/1e6,
+      min_pol_mln=min(Population)/1e6,
       min_year=min(ValueYear),
      max_year=max(ValueYear))
 ```
