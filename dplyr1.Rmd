@@ -1,0 +1,260 @@
+---
+title: "dplyr package - Data Wrangling 1"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+## Подготовка 
+
+
+Наш главный пакет для манипуляции данных
+
+```{r, message=F}
+library(dplyr)
+```
+
+
+### Импортируем данные о странах из Excel
+
+```{r}
+library(knitr) # собираем документ из RMarkdown
+library(readxl) # импорт из Excel
+library(stringr) # основные операции со строками
+library(tibble) # улучшенные датафреймы
+
+```
+
+
+### База girls & boys
+
+
+```{r}
+
+```
+
+
+
+
+
+### База "страны"
+
+
+```{r}
+countries <- read_excel("data/Country2020.xlsx")
+
+countries[1:10,]
+```
+
+
+```{r}
+population <- read_excel("data/population2020.xlsx")
+life_expectancy <- read_excel("data/LifeExpectancy2020.xlsx")
+language <- read_excel("data/countrylanguage2020.xlsx")
+gdp <- read_excel("data/GDPCurrent2020.xlsx")
+```
+
+Население 
+```{r}
+kable(population[1:10,])
+```
+
+Ожидаемая (средняя) продожителность жизни
+
+```{r}
+slice(life_expectancy,c(1:5,1030:1035))
+```
+Языки в странах
+
+```{r}
+slice(language,c(1:5,30:35))
+```
+
+
+`slice(df,rownums)`  выдает строки с указанными номерами
+
+
+
+
+поменяем тип столбца IsOfficial на logical
+
+```{r}
+language <-  mutate(language,IsOfficial=as.logical(IsOfficial)) 
+slice(language,c(1:5,30:35))
+```
+
+
+* * *
+
+
+ВВП
+
+```{r}
+slice(gdp,c(1:3,1100:1112))
+```
+
+
+
+## Pipe operator -- используем для организации конвейера преобразований
+
+Позволяет избавиться от нагромождения вложенных вызовов функций 
+
+```r
+f(g(x,y),z)
+   ==== эквивалентно ==== 
+x %>% g(y) %>% f(z)
+
+f(z,g(x,y))
+   ==== эквивалентно  ==== 
+x %>% g(y) %>% f(z, . )
+```
+cat последовательно выводит свои аргументы как строки. "Привет" вставляется как 1й аргумент
+
+```{r}
+"привет" %>% cat(", Илья!",sep = "")
+```
+
+"Привет" вставляется как 1й аргумент. Вставляется на месте точки.
+
+                          
+```{r}
+"привет" %>% cat( "Илья, ", ., "!",sep = "")
+```
+
+
+Эквивалентные строки кода:
+
+```{r}
+slice_max(population,Population,n=5)
+population %>% slice_max(Population,n=5)
+```
+
+
+
+## filter 
+
+```{r}
+countries %>% filter(Region=='Eastern Europe' )
+```
+
+
+Страны Европы с площадью поверхности  более 100000 кв. км.
+(Условия соединены AND)
+
+```{r}
+countries %>% filter(Region=='Eastern Europe', SurfaceArea>100000)
+```
+
+Или то же самое c "&"
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'& SurfaceArea>100000)
+```
+
+Условия соединены OR
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000)
+```
+
+Проверка принадлежности списку `%in%` заменяет OR
+
+```{r}
+countries %>% filter(Region %in% c('Eastern Europe','Baltic Countries'), SurfaceArea<100000)
+```
+
+## arrange -- упорядочить по убыванию (desc) или возрастанию
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(SurfaceArea)
+```
+
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(Name)
+```
+
+
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(desc(IndepYear))
+```
+
+
+```{r}
+countries %>% filter(Region %in% c('Eastern Europe','Baltic Countries')) %>%
+  arrange(Region, desc(SurfaceArea))
+```
+
+
+## select выбирает нужные столбцы
+
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(desc(IndepYear)) %>% 
+  select(Name,SurfaceArea,IndepYear)
+```
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(desc(IndepYear)) %>% 
+  select(-c(Continent, GovernmentForm))
+```
+
+
+```{r}
+countries %>% filter(Region=='Eastern Europe'|Region=='Baltic Countries', SurfaceArea<100000) %>% 
+  arrange(desc(IndepYear)) %>% 
+  select(contains("Code"), Name, IndepYear)
+```
+
+
+```{r}
+population %>% filter(CountryCode=='RUS') %>% 
+  mutate(pop_mln=Population/1e6)
+```
+
+
+```{r}
+population %>% filter(CountryCode=='RUS') %>% 
+  transmute(CountryCode, pop_mln=Population/1e6)
+```
+
+
+
+```{r}
+population %>% filter(CountryCode=='RUS') %>% 
+  summarise(
+     avg_pol_mln=mean(Population),
+      min_year=min(ValueYear),
+     max_year=max(ValueYear))
+```
+## group_by
+
+
+
+group_by() делит на группы строки с общим значением поля
+
+
+
+
+среднее количество населения и минимальные и максимальные года измерения для стран в  
+
+```{r}
+population %>%  filter(str_detect(CountryCode,"US") ) %>% 
+  group_by(CountryCode) %>% 
+  summarise(
+     avg_pol_mln=mean(Population),
+      min_year=min(ValueYear),
+     max_year=max(ValueYear)) %>% 
+     arrange(desc(avg_pol_mln))
+```
