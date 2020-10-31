@@ -19,7 +19,9 @@ library(dplyr)
 ```
 
 
-
+```{r}
+(girls2 <- read_delim("csv/girls.txt",delim = "|",locale=locale(decimal_mark = ",")))
+```
 
  ```
 # Соединение таблиц (операция join)
