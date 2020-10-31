@@ -62,6 +62,28 @@ country_t
 country_t %>%  group_by(Continent)  %>% summarise(kolvo_stran=n()) %>% arrange(desc(kolvo_stran))
 ```
 
+**Задание 001**
+Соединить города и страны по CountryCode,  выдать 10 самых населенных
+
+```{r}
+city_t %>% inner_join(country_t, by="CountryCode",suffix=c("_city","_country")) %>% arrange(desc(Population_city)) %>% slice_head(n=10)
+```
+
+```{r}
+marks <- c(one=1,two=2,three=3,four=4, five=5,n_ya=0)
+marks["two"]
+marks[6]
+```
+
+
+**Задание 002**
+Соединить города и страны по Capital,  выдать 10 самых населенных
+
+```{r}
+city_t %>% inner_join(country_t, by=c(CityID="Capital"),suffix=c("_city","_country")) %>% slice(1:10) 
+```
+
+
 
 **Задание 1**
 Выдайте названия территорий и стран мира, в которых нет крупных городов (нет соответствующих строк в таблице city_t)
