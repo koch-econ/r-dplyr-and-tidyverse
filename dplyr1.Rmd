@@ -1,9 +1,9 @@
 ---
 title: "dplyr package - Data Wrangling 1"
 output:
+  word_document: default
   html_document:
     df_print: paged
-  word_document: default
 ---
 
 ## Подготовка 
@@ -11,14 +11,14 @@ output:
 
 Наш главный пакет для манипуляции данных
 
-```{r, message=F}
+```{r, message=FALSE}
 library(dplyr)
 ```
 
 
 ### Импортируем данные о странах из Excel
 
-```{r}
+```{r, message=FALSE}
 library(knitr) # собираем документ из RMarkdown
 library(readxl) # импорт из Excel
 library(stringr) # основные операции со строками
@@ -37,14 +37,49 @@ library(readr) # read_csv() , read_delim()
 ```{r}
 (girls <- read_delim("csv/girls.txt",delim = "|"))
 ```
+```{r}
+(girls <- read_delim("csv/girls_comma_decimal.txt",delim = "|",
+                     locale = locale(decimal_mark = ",")))
+```
+
+```{r}
+mean(boys$height)
+```
+```{r}
+boys[2,4]
+```
+```{r}
+boys[-2,c("hobby","name")]
+```
+
+```{r}
+boys[boys$height>176,]
+```
+```{r}
+boys[boys$age>25 & boys$hobby=="лыжи" ,]
+```
+```{r}
+boys[boys$age>25 | boys$hobby=="лыжи" ,]
+```
+### Pipe `%>%`
 
 
 
-
-
-
-
-
+```{r}
+boys %>% filter(hobby=="лыжи")
+```
+```{r}
+boys %>% filter(age>25) %>% 
+  arrange(height)
+```
+```{r}
+boys %>% filter(age>25) %>% 
+  summarise(rost=mean(height),sumage=sum(age),minrost=min(height))
+```
+```{r}
+boys %>% group_by(hobby) %>% 
+  summarise(rost=mean(height),sumage=sum(age),minrost=min(height))
+```
 
 
 ### База "страны"
@@ -55,6 +90,16 @@ countries <- read_excel("data/Country2020.xlsx")
 
 countries[1:10,]
 ```
+
+```{r}
+filter(countries,Continent=="Europe") %>% summarise(maxPloschad=max(SurfaceArea)) 
+```
+```{r}
+countries %>% group_by(Continent) %>% 
+  summarise(max_year=max(IndepYear,na.rm = T)) %>% 
+  arrange(desc(max_year))
+```
+
 
 
 ```{r}
