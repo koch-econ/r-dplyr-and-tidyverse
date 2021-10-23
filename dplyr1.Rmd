@@ -35,11 +35,13 @@ library(readr) # read_csv() , read_delim()
 ```
 
 ```{r}
-(girls <- read_delim("csv/girls.txt",delim = "|"))
+(girls <- read_delim("csv/girls.txt",delim = "|",col_types =
+                       "????d"))
 ```
 ```{r}
 (girls <- read_delim("csv/girls_comma_decimal.txt",delim = "|",
-                     locale = locale(decimal_mark = ",")))
+                     locale = locale(decimal_mark = ","), 
+                     col_types = "????d"))
 ```
 
 ```{r}
