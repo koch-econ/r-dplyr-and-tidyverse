@@ -35,13 +35,12 @@ library(readr) # read_csv() , read_delim()
 ```
 
 ```{r}
-(girls <- read_delim("csv/girls.txt",delim = "|",col_types =
-                       "????d"))
+(girls <- read_delim("csv/girls.txt",delim = "|",col_types ="????n"))
 ```
 ```{r}
 (girls <- read_delim("csv/girls_comma_decimal.txt",delim = "|",
                      locale = locale(decimal_mark = ","), 
-                     col_types = "????d"))
+                     col_types = "????n"))
 ```
 
 ```{r}
@@ -74,15 +73,23 @@ boys %>% filter(hobby=="лыжи")
 boys %>% filter(age>25) %>% 
   arrange(height)
 ```
+
+```{r}
+boys %>% filter(age>25) %>% 
+  arrange(desc(height))
+```
 ```{r}
 boys %>% filter(age>25) %>% 
   summarise(rost=mean(height),sumage=sum(age),minrost=min(height))
 ```
 ```{r}
 boys %>% group_by(hobby) %>% 
-  summarise(rost=mean(height),sumage=sum(age),minrost=min(height))
+  summarise(rost=mean(height),sumage=sum(age),minrost=min(height),kolvo=n())
 ```
-
+```{r}
+girls %>% group_by(hobby) %>% 
+  summarise(rost=mean(height),sumage=sum(age),minrost=min(height),kolvo=n())
+```
 
 ### База "страны"
 
@@ -131,6 +138,10 @@ slice(language,c(1:5,30:35))
 `slice(df,rownums)`  выдает строки с указанными номерами
 
 
+```{r}
+countries %>% group_by(GovernmentForm) %>% 
+  summarise(kol_vo=n()) %>% arrange(desc(kol_vo))
+```
 
 
 поменяем тип столбца IsOfficial на logical
@@ -324,3 +335,10 @@ population %>%  filter(str_detect(CountryCode,"US") ) %>%
      max_year=max(ValueYear)) %>% 
      arrange(desc(avg_pol_mln))
 ```
+
+
+
+```{r}
+
+```
+
