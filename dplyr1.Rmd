@@ -11,14 +11,14 @@ output:
 
 Наш главный пакет для манипуляции данных
 
-```{r, message=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 ```
 
 
 ### Импортируем данные о странах из Excel
 
-```{r, message=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(knitr) # собираем документ из RMarkdown
 library(readxl) # импорт из Excel
 library(stringr) # основные операции со строками
@@ -39,7 +39,7 @@ library(readr) # read_csv() , read_delim()
 ```
 ```{r}
 (girls <- read_delim("csv/girls_comma_decimal.txt",delim = "|",
-                     locale = locale(decimal_mark = ","), 
+                   locale = locale(decimal_mark = ","), 
                      col_types = "????n"))
 ```
 
@@ -109,6 +109,9 @@ countries %>% group_by(Continent) %>%
   arrange(desc(max_year))
 ```
 
+```{r}
+countries %>% slice_max(IndepYear, n=3)
+```
 
 
 ```{r}
@@ -340,5 +343,34 @@ population %>%  filter(str_detect(CountryCode,"US") ) %>%
 
 ```{r}
 
+population %>% count(ValueYear, sort=TRUE)
+
+```
+```{r}
+pop07 <- filter(population,ValueYear==2007) %>% select(!ValueYear)
+```
+
+```{r}
+head(pop07)
+```
+```{r}
+country_pop <- inner_join(countries, pop07, by="CountryCode")
+country_pop %>% slice_head()
+```
+
+```{r}
+country_pop %>% group_by(Continent) %>% 
+  summarise(kolvo=n(), sum_pop=sum(Population)) %>% 
+  arrange(desc(sum_pop))
+```
+```{r}
+country_pop %>% group_by(Continent) %>% slice_max(Population,n=1)
+
+```
+```{r}
+country_pop %>% 
+  mutate(density=Population/SurfaceArea,.before = IndepYear,.keep="unused") %>% 
+  group_by(Continent) %>% 
+  slice_max(density,n=1)
 ```
 

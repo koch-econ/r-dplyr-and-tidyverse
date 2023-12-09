@@ -1,0 +1,80 @@
+---
+title: "purrr - intro"
+format: html
+editor: visual
+---
+
+Начальная загрузка
+
+```{r}
+library(tidyverse)
+library(repurrrsive)
+
+```
+
+наборы данных
+
+```{r employee_list }
+
+# Creating employee data
+employee_list <- list(
+  employee_id = c(101, 102, 103),
+  names = c("Alice", "Bob", "Charlie"),
+  ages = c(25, 30, 28),
+  departments = c("HR", "Engineering", "Marketing"),
+  salaries = c(50000, 60000, 55000),
+  is_manager = c(FALSE, TRUE, FALSE)
+)
+
+```
+
+```{r}
+#| eval: false
+data(package="repurrrsive")
+```
+```
+Data sets in package ‘repurrrsive’:
+discog               Sharla Gelfand's music collection
+gap_nested           Gapminder data frame in various forms
+gap_simple           Gapminder data frame in various forms
+gap_split            Gapminder data frame in various forms
+gh_repos             GitHub repos
+gh_users             GitHub users
+gmaps_cities         Geocoded cities from Google Maps
+got_chars            Game of Thrones POV characters
+sw_films             Entities from the Star Wars Universe
+sw_people            Entities from the Star Wars Universe
+sw_planets           Entities from the Star Wars Universe
+sw_species           Entities from the Star Wars Universe
+sw_starships         Entities from the Star Wars Universe
+sw_vehicles          Entities from the Star Wars Universe
+wesanderson          Color palettes from Wes Anderson movies
+
+```
+
+
+# Purrr
+
+Вспомним списки
+
+```{r}
+names(employee_list)
+```
+
+```{r}
+employee_list[c(2,4)]
+```
+
+```{r}
+employee_list[c("names","departments")]
+```
+
+
+### Итерации вместо циклов
+
+```{r}
+map(employee_list,class)
+```
+```{r}
+map(employee_list,class)
+```
