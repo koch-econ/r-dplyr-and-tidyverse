@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>purrr - intro</title>
+<title>purrr - пакет для функционального программирования и обработки списков</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">purrr - intro</h1>
+<h1 class="title">purrr - пакет для функционального программирования и обработки списков</h1>
 </div>
 
 
@@ -96,36 +96,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Начальная загрузка</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(repurrrsive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(repurrrsive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>наборы данных</p>
+<section id="наборы-данных" class="level2">
+<h2 class="anchored" data-anchor-id="наборы-данных">наборы данных</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating employee data</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>employee_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">employee_id =</span> <span class="fu">c</span>(<span class="dv">101</span>, <span class="dv">102</span>, <span class="dv">103</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ages =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">28</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">departments =</span> <span class="fu">c</span>(<span class="st">"HR"</span>, <span class="st">"Engineering"</span>, <span class="st">"Marketing"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">salaries =</span> <span class="fu">c</span>(<span class="dv">50000</span>, <span class="dv">60000</span>, <span class="dv">55000</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">is_manager =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package=</span><span class="st">"repurrrsive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package=</span><span class="st">"repurrrsive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>Для более сложных примеров</p>
 <pre><code>Data sets in package ‘repurrrsive’:
 discog               Sharla Gelfand's music collection
 gap_nested           Gapminder data frame in various forms
@@ -141,20 +120,32 @@ sw_planets           Entities from the Star Wars Universe
 sw_species           Entities from the Star Wars Universe
 sw_starships         Entities from the Star Wars Universe
 sw_vehicles          Entities from the Star Wars Universe
-wesanderson          Color palettes from Wes Anderson movies
-</code></pre>
+wesanderson          Color palettes from Wes Anderson movies</code></pre>
+<p>Список с данным по “столбцам” как dataframe</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating employee data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>employee_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">employee_id =</span> <span class="fu">c</span>(<span class="dv">101</span>, <span class="dv">102</span>, <span class="dv">103</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ages =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">28</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">departments =</span> <span class="fu">c</span>(<span class="st">"HR"</span>, <span class="st">"Engineering"</span>, <span class="st">"Marketing"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">salaries =</span> <span class="fu">c</span>(<span class="dv">50000</span>, <span class="dv">60000</span>, <span class="dv">55000</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">is_manager =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="purrr" class="level1">
 <h1>Purrr</h1>
 <p>Вспомним списки</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(employee_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(employee_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "employee_id" "names"       "ages"        "departments" "salaries"   
 [6] "is_manager" </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>employee_list[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>employee_list[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$names
 [1] "Alice"   "Bob"     "Charlie"
@@ -164,19 +155,56 @@ $departments
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>employee_list[<span class="fu">c</span>(<span class="st">"names"</span>,<span class="st">"departments"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>employee_list[<span class="fu">c</span>(<span class="st">"names"</span>,<span class="st">"departments"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$names
 [1] "Alice"   "Bob"     "Charlie"
 
 $departments
 [1] "HR"          "Engineering" "Marketing"  </code></pre>
+</div>
+</div>
+<p>Добавляем в список hire_date</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>employee_list [[<span class="st">'hire_date'</span>]] <span class="ot">=</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ymd</span>(<span class="fu">c</span>(<span class="st">'2018-10-1'</span>, <span class="st">'2020-1-2'</span>, <span class="st">'2022-11-1'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Транспонируем список</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>emp_tr_list<span class="ot">=</span><span class="fu">transpose</span>(employee_list)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(emp_tr_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ :List of 7
+  ..$ employee_id: num 101
+  ..$ names      : chr "Alice"
+  ..$ ages       : num 25
+  ..$ departments: chr "HR"
+  ..$ salaries   : num 50000
+  ..$ is_manager : logi FALSE
+  ..$ hire_date  : num 17805
+ $ :List of 7
+  ..$ employee_id: num 102
+  ..$ names      : chr "Bob"
+  ..$ ages       : num 30
+  ..$ departments: chr "Engineering"
+  ..$ salaries   : num 60000
+  ..$ is_manager : logi TRUE
+  ..$ hire_date  : num 18263
+ $ :List of 7
+  ..$ employee_id: num 103
+  ..$ names      : chr "Charlie"
+  ..$ ages       : num 28
+  ..$ departments: chr "Marketing"
+  ..$ salaries   : num 55000
+  ..$ is_manager : logi FALSE
+  ..$ hire_date  : num 19297</code></pre>
 </div>
 </div>
 <section id="итерации-вместо-циклов" class="level3">
 <h3 class="anchored" data-anchor-id="итерации-вместо-циклов">Итерации вместо циклов</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(employee_list,class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(employee_list,class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$employee_id
 [1] "numeric"
@@ -194,30 +222,207 @@ $salaries
 [1] "numeric"
 
 $is_manager
-[1] "logical"</code></pre>
+[1] "logical"
+
+$hire_date
+[1] "Date"</code></pre>
+</div>
+</div>
+<p>Символ формулы <code>~</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(employee_list,<span class="sc">~</span><span class="fu">class</span>(.))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$employee_id
+[1] "numeric"
+
+$names
+[1] "character"
+
+$ages
+[1] "numeric"
+
+$departments
+[1] "character"
+
+$salaries
+[1] "numeric"
+
+$is_manager
+[1] "logical"
+
+$hire_date
+[1] "Date"</code></pre>
+</div>
+</div>
+<p>Если результат нужен - не список</p>
+<p>Вот семейство функций map:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apropos</span>(<span class="st">'^[pi]?map</span><span class="sc">\\</span><span class="st">d?_'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "imap_chr"  "imap_dbl"  "imap_dfc"  "imap_dfr"  "imap_int"  "imap_lgl" 
+ [7] "imap_raw"  "map_at"    "map_chr"   "map_data"  "map_dbl"   "map_depth"
+[13] "map_df"    "map_dfc"   "map_dfr"   "map_if"    "map_int"   "map_lgl"  
+[19] "map_raw"   "map_vec"   "map2_chr"  "map2_dbl"  "map2_df"   "map2_dfc" 
+[25] "map2_dfr"  "map2_int"  "map2_lgl"  "map2_raw"  "map2_vec"  "pmap_chr" 
+[31] "pmap_dbl"  "pmap_df"   "pmap_dfc"  "pmap_dfr"  "pmap_int"  "pmap_lgl" 
+[37] "pmap_raw"  "pmap_vec" </code></pre>
+</div>
+</div>
+<ul>
+<li><p>map_<em>тип</em>(список,формула) - выдает <strong>вектор</strong> результатов формулы, приведенный к типу <em>тип</em></p></li>
+<li><p>map_dbl(list(a1,a2,a3), func) – возвращает вектор вещественных чисел c(func(a1),func(a2),func(a3))</p></li>
+<li><p>map_lgl(list(a1,a2,a3), func) – возвращает вектор логических значений c(func(a1),func(a2),func(a3))</p></li>
+<li><p>map_df(list(a1,a2,a3), func) – возвращает dataframe (рекомендуется заменить на map() %&gt;% list_rbind() )</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_int</span>(employee_list, <span class="sc">~</span><span class="fu">length</span>(.x) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>employee_id       names        ages departments    salaries  is_manager 
+          3           3           3           3           3           3 
+  hire_date 
+          3 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(employee_list,class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map2</span>(employee_list,<span class="fu">names</span>(employee_list), <span class="sc">~</span> <span class="fu">paste</span>(<span class="fu">class</span>(.x) , .y,<span class="at">sep=</span><span class="st">"-"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$employee_id
-[1] "numeric"
+[1] "numeric-employee_id"
 
 $names
-[1] "character"
+[1] "character-names"
 
 $ages
-[1] "numeric"
+[1] "numeric-ages"
 
 $departments
-[1] "character"
+[1] "character-departments"
 
 $salaries
-[1] "numeric"
+[1] "numeric-salaries"
 
 $is_manager
-[1] "logical"</code></pre>
+[1] "logical-is_manager"
+
+$hire_date
+[1] "Date-hire_date"</code></pre>
 </div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#         x             y               formula</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map2_chr</span>(employee_list,<span class="fu">names</span>(employee_list), <span class="sc">~</span> <span class="fu">paste</span>(<span class="fu">class</span>(.x) , .y,<span class="at">sep=</span><span class="st">"-"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            employee_id                   names                    ages 
+  "numeric-employee_id"       "character-names"          "numeric-ages" 
+            departments                salaries              is_manager 
+"character-departments"      "numeric-salaries"    "logical-is_manager" 
+              hire_date 
+       "Date-hire_date" </code></pre>
+</div>
+</div>
+<p>Наш транспонированный список, ориентированный “по строкам”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(emp_tr_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ :List of 7
+  ..$ employee_id: num 101
+  ..$ names      : chr "Alice"
+  ..$ ages       : num 25
+  ..$ departments: chr "HR"
+  ..$ salaries   : num 50000
+  ..$ is_manager : logi FALSE
+  ..$ hire_date  : num 17805
+ $ :List of 7
+  ..$ employee_id: num 102
+  ..$ names      : chr "Bob"
+  ..$ ages       : num 30
+  ..$ departments: chr "Engineering"
+  ..$ salaries   : num 60000
+  ..$ is_manager : logi TRUE
+  ..$ hire_date  : num 18263
+ $ :List of 7
+  ..$ employee_id: num 103
+  ..$ names      : chr "Charlie"
+  ..$ ages       : num 28
+  ..$ departments: chr "Marketing"
+  ..$ salaries   : num 55000
+  ..$ is_manager : logi FALSE
+  ..$ hire_date  : num 19297</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(emp_tr_list, <span class="cf">function</span>(el) { el [<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)] } )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[[1]]$names
+[1] "Alice"
+
+[[1]]$departments
+[1] "HR"
+
+
+[[2]]
+[[2]]$names
+[1] "Bob"
+
+[[2]]$departments
+[1] "Engineering"
+
+
+[[3]]
+[[3]]$names
+[1] "Charlie"
+
+[[3]]$departments
+[1] "Marketing"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(emp_tr_list, <span class="cf">function</span>(el) { el [<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)] } )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  names   departments
+  &lt;chr&gt;   &lt;chr&gt;      
+1 Alice   HR         
+2 Bob     Engineering
+3 Charlie Marketing  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(emp_tr_list, <span class="st">`</span><span class="at">[</span><span class="st">`</span>,  <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  names   departments
+  &lt;chr&gt;   &lt;chr&gt;      
+1 Alice   HR         
+2 Bob     Engineering
+3 Charlie Marketing  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(emp_tr_list, <span class="sc">~</span>.x [<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  names   departments
+  &lt;chr&gt;   &lt;chr&gt;      
+1 Alice   HR         
+2 Bob     Engineering
+3 Charlie Marketing  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(emp_tr_list, <span class="st">'names'</span>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Alice"   "Bob"     "Charlie"</code></pre>
+</div>
+</div>
+</section>
+<section id="работа-с-неименованными-списками" class="level2">
+<h2 class="anchored" data-anchor-id="работа-с-неименованными-списками">Работа с неименованными списками</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(repurrrsive)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sw_films)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>

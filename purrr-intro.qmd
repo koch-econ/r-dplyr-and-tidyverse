@@ -1,5 +1,5 @@
 ---
-title: "purrr - intro"
+title: "purrr - пакет для функционального программирования и обработки списков"
 format: html
 editor: visual
 ---
@@ -7,32 +7,22 @@ editor: visual
 Начальная загрузка
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(repurrrsive)
 
 ```
 
-наборы данных
-
-```{r employee_list }
-
-# Creating employee data
-employee_list <- list(
-  employee_id = c(101, 102, 103),
-  names = c("Alice", "Bob", "Charlie"),
-  ages = c(25, 30, 28),
-  departments = c("HR", "Engineering", "Marketing"),
-  salaries = c(50000, 60000, 55000),
-  is_manager = c(FALSE, TRUE, FALSE)
-)
-
-```
+## наборы данных
 
 ```{r}
 #| eval: false
 data(package="repurrrsive")
 ```
-```
+
+Для более сложных примеров
+
+```         
 Data sets in package ‘repurrrsive’:
 discog               Sharla Gelfand's music collection
 gap_nested           Gapminder data frame in various forms
@@ -49,9 +39,23 @@ sw_species           Entities from the Star Wars Universe
 sw_starships         Entities from the Star Wars Universe
 sw_vehicles          Entities from the Star Wars Universe
 wesanderson          Color palettes from Wes Anderson movies
-
 ```
 
+Список с данным по "столбцам" как dataframe
+
+```{r employee_list }
+
+# Creating employee data
+employee_list <- list(
+  employee_id = c(101, 102, 103),
+  names = c("Alice", "Bob", "Charlie"),
+  ages = c(25, 30, 28),
+  departments = c("HR", "Engineering", "Marketing"),
+  salaries = c(50000, 60000, 55000),
+  is_manager = c(FALSE, TRUE, FALSE)
+)
+
+```
 
 # Purrr
 
@@ -69,12 +73,92 @@ employee_list[c(2,4)]
 employee_list[c("names","departments")]
 ```
 
+Добавляем в список hire_date
+
+```{r}
+employee_list [['hire_date']] = 
+  ymd(c('2018-10-1', '2020-1-2', '2022-11-1'))
+```
+
+Транспонируем список
+
+```{r}
+emp_tr_list=transpose(employee_list)
+glimpse(emp_tr_list)
+```
 
 ### Итерации вместо циклов
 
 ```{r}
 map(employee_list,class)
 ```
+
+Символ формулы `~`
+
 ```{r}
-map(employee_list,class)
+map(employee_list,~class(.))
+```
+
+Если результат нужен - не список
+
+Вот семейство функций map:
+
+```{r}
+apropos('^[pi]?map\\d?_')
+```
+
+-   map\_*тип*(список,формула) - выдает **вектор** результатов формулы, приведенный к типу *тип*
+
+-   map_dbl(list(a1,a2,a3), func) -- возвращает вектор вещественных чисел c(func(a1),func(a2),func(a3))
+
+-   map_lgl(list(a1,a2,a3), func) -- возвращает вектор логических значений c(func(a1),func(a2),func(a3))
+
+-   map_df(list(a1,a2,a3), func) -- возвращает dataframe (рекомендуется заменить на map() %\>% list_rbind() )
+
+```{r}
+map_int(employee_list, ~length(.x) )
+```
+
+```{r}
+map2(employee_list,names(employee_list), ~ paste(class(.x) , .y,sep="-"))
+```
+
+```{r}
+#         x             y               formula
+map2_chr(employee_list,names(employee_list), ~ paste(class(.x) , .y,sep="-"))
+```
+
+Наш транспонированный список, ориентированный "по строкам"
+
+```{r}
+
+glimpse(emp_tr_list)
+
+```
+
+```{r}
+map(emp_tr_list, function(el) { el [c(2,4)] } )
+```
+
+```{r}
+map_df(emp_tr_list, function(el) { el [c(2,4)] } )
+```
+
+```{r}
+map_df(emp_tr_list, `[`,  c(2,4) )
+```
+
+```{r}
+map_df(emp_tr_list, ~.x [c(2,4)]   )
+```
+
+```{r}
+map_chr(emp_tr_list, 'names'   )
+```
+
+## Работа с неименованными списками
+
+```{r}
+library(repurrrsive)
+data(sw_films)
 ```
